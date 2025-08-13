@@ -1,6 +1,25 @@
 @extends('layouts.app')
 
 @section('content')
+<!-- Flash Messages -->
+@if(session('success'))
+<div class="mb-6 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg" role="alert">
+    <div class="flex items-center">
+        <span class="text-green-500 mr-2">✅</span>
+        <span>{{ session('success') }}</span>
+    </div>
+</div>
+@endif
+
+@if(session('error'))
+<div class="mb-6 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg" role="alert">
+    <div class="flex items-center">
+        <span class="text-red-500 mr-2">❌</span>
+        <span>{{ session('error') }}</span>
+    </div>
+</div>
+@endif
+
 <div class="mb-6">
     <a href="/" class="text-orange-600 hover:text-orange-800 flex items-center">
         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

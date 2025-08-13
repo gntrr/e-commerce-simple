@@ -54,7 +54,7 @@ class CartController extends Controller
             ]);
         }
 
-        return back()->with('success', 'Produk berhasil ditambahkan ke keranjang!');
+        return back()->with('success', "✅ {$product['name']} berhasil ditambahkan ke keranjang!");
     }
 
     public function update(Request $request, Cart $cart)
@@ -62,29 +62,30 @@ class CartController extends Controller
         $this->authorize('update', $cart);
         
         $request->validate([
-            'qty' => 'required|integer|min:50'
+            'qty' => 'required|integer|min:100'
         ]);
-
+        
         $cart->update([
             'qty' => $request->qty
         ]);
-
-        return back()->with('success', 'Keranjang berhasil diupdate!');
+        
+        return redirect()->back()->with('success', "📝 Jumlah {$cart->product_name} berhasil diperbarui!");
     }
 
     public function remove(Cart $cart)
     {
         $this->authorize('delete', $cart);
         
+        $productName = $cart->product_name;
         $cart->delete();
-
-        return back()->with('success', 'Produk berhasil dihapus dari keranjang!');
+        
+        return redirect()->back()->with('success', "🗑️ {$productName} berhasil dihapus dari keranjang!");
     }
 
     public function clear()
     {
-        Auth::user()->carts()->delete();
+        auth()->user()->carts()->delete();
         
-        return back()->with('success', 'Keranjang berhasil dikosongkan!');
+        return redirect()->back()->with('success', "🧹 Keranjang berhasil dikosongkan!");
     }
 }

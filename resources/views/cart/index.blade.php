@@ -2,6 +2,25 @@
 
 @section('content')
 <div class="max-w-4xl mx-auto">
+    <!-- Flash Messages -->
+    @if(session('success'))
+    <div class="mb-6 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg" role="alert">
+        <div class="flex items-center">
+            <span class="text-green-500 mr-2">✅</span>
+            <span>{{ session('success') }}</span>
+        </div>
+    </div>
+    @endif
+    
+    @if(session('error'))
+    <div class="mb-6 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg" role="alert">
+        <div class="flex items-center">
+            <span class="text-red-500 mr-2">❌</span>
+            <span>{{ session('error') }}</span>
+        </div>
+    </div>
+    @endif
+
     <div class="flex items-center justify-between mb-6">
         <h1 class="text-3xl font-bold text-orange-900">🛒 Keranjang Belanja</h1>
         <a href="{{ route('home') }}" class="text-orange-600 hover:text-orange-800 font-medium">
