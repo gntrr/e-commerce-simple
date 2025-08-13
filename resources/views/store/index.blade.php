@@ -5,7 +5,7 @@
 @if(session('success'))
 <div class="mb-6 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg" role="alert">
     <div class="flex items-center">
-        <span class="text-green-500 mr-2">✅</span>
+        <span class="text-green-500 mr-2">✅ </span>
         <span>{{ session('success') }}</span>
     </div>
 </div>

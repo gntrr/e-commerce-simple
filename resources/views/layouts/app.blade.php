@@ -47,6 +47,9 @@
                                 <a href="{{ route('orders.mine') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-orange-50">
                                     📦 Riwayat Pesanan
                                 </a>
+                                <a href="{{ route('seller.products.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-orange-50">
+                                    🏪 Kelola Produk
+                                </a>
                                 <form method="POST" action="{{ route('logout') }}" class="block">
                                     @csrf
                                     <button type="submit" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-orange-50">

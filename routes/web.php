@@ -5,10 +5,11 @@ use App\Http\Controllers\StoreController;
 use App\Http\Controllers\AdminOrderController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\SellerProductController;
 
 // Store routes
 Route::get('/', [StoreController::class, 'index'])->name('home');
-Route::get('/p/{sku}', [StoreController::class, 'show'])->name('product.show');
+Route::get('/p/{sku}', [StoreController::class, 'show'])->name('product.show')->middleware('auth');
 Route::post('/checkout', [StoreController::class, 'checkout'])->name('checkout');
 
 // Auth routes
@@ -29,6 +30,11 @@ Route::middleware('auth')->group(function () {
     
     // User orders
     Route::get('/my-orders', [StoreController::class, 'myOrders'])->name('orders.mine');
+    
+    // Seller product management
+    Route::prefix('seller')->name('seller.')->group(function () {
+        Route::resource('products', SellerProductController::class);
+    });
 });
 
 // Admin routes

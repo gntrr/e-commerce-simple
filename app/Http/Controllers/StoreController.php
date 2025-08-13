@@ -7,22 +7,46 @@ use Illuminate\Support\Facades\Auth;
 use App\Support\ProductStore;
 use App\Models\Order;
 use App\Models\Cart;
+use App\Models\Product;
 
 class StoreController extends Controller
 {
     public function index()
     {
-        $products = ProductStore::all();
+        $products = Product::where('is_active', true)
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->map(function ($product) {
+                return [
+                    'sku' => $product->sku,
+                    'name' => $product->name,
+                    'price' => $product->price,
+                    'photo' => $product->photo,
+                    'desc' => $product->description
+                ];
+            })
+            ->toArray();
+        
         return view('store.index', compact('products'));
     }
     
     public function show($sku)
     {
-        $product = ProductStore::findBySku($sku);
+        $productModel = Product::where('sku', $sku)
+            ->where('is_active', true)
+            ->first();
         
-        if (!$product) {
+        if (!$productModel) {
             abort(404);
         }
+        
+        $product = [
+            'sku' => $productModel->sku,
+            'name' => $productModel->name,
+            'price' => $productModel->price,
+            'photo' => $productModel->photo,
+            'desc' => $productModel->description
+        ];
         
         return view('store.show', compact('product'));
     }
@@ -46,10 +70,20 @@ class StoreController extends Controller
             'address' => 'required'
         ]);
         
-        $product = ProductStore::findBySku($request->sku);
-        if (!$product) {
+        $productModel = Product::where('sku', $request->sku)
+            ->where('is_active', true)
+            ->first();
+        if (!$productModel) {
             abort(422, 'Product not found');
         }
+        
+        $product = [
+            'sku' => $productModel->sku,
+            'name' => $productModel->name,
+            'price' => $productModel->price,
+            'photo' => $productModel->photo,
+            'desc' => $productModel->description
+        ];
         
         // Generate order code
         $orderCode = 'INV-' . str_pad(rand(1, 999999), 6, '0', STR_PAD_LEFT);
