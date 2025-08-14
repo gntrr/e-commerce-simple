@@ -44,12 +44,36 @@
                             
                             <!-- Dropdown Menu -->
                             <div class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                                <a href="{{ route('orders.mine') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-orange-50">
-                                    📦 Riwayat Pesanan
-                                </a>
-                                <a href="{{ route('seller.products.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-orange-50">
-                                    🏪 Kelola Produk
-                                </a>
+                                <!-- Common menu for all users -->
+                                <div class="px-4 py-2 text-xs text-gray-500 uppercase tracking-wide border-b">
+                                    {{ Auth::user()->role === 'admin' ? '👑 Admin' : (Auth::user()->role === 'seller' ? '🏪 Seller' : '👤 Customer') }}
+                                </div>
+                                
+                                @if(Auth::user()->isAdmin())
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-orange-50">
+                                        ⚙️ Admin Panel
+                                    </a>
+                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-orange-50">
+                                        👥 Kelola User
+                                    </a>
+                                @endif
+                                
+                                @if(Auth::user()->isSeller())
+                                    <a href="{{ route('seller.products.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-orange-50">
+                                        🏪 Kelola Produk
+                                    </a>
+                                    <a href="{{ route('orders.mine') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-orange-50">
+                                        📊 Pesanan Masuk
+                                    </a>
+                                @endif
+                                
+                                @if(Auth::user()->isCustomer())
+                                    <a href="{{ route('orders.mine') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-orange-50">
+                                        📦 Riwayat Pesanan
+                                    </a>
+                                @endif
+                                
+                                <div class="border-t my-1"></div>
                                 <form method="POST" action="{{ route('logout') }}" class="block">
                                     @csrf
                                     <button type="submit" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-orange-50">

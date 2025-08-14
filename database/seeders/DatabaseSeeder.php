@@ -13,11 +13,49 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Create admin user
+        User::factory()->create([
+            'name' => 'Admin User',
+            'email' => 'admin@example.com',
+            'role' => 'admin',
+        ]);
+
+        // Create seller users
+        User::factory()->create([
+            'name' => 'Seller User',
+            'email' => 'seller@example.com',
+            'role' => 'seller',
+        ]);
 
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'name' => 'Toko Rempah Nusantara',
+            'email' => 'seller2@example.com',
+            'role' => 'seller',
         ]);
+
+        // Create customer users
+        User::factory()->create([
+            'name' => 'Customer User',
+            'email' => 'customer@example.com',
+            'role' => 'customer',
+        ]);
+
+        User::factory()->create([
+            'name' => 'John Doe',
+            'email' => 'john@example.com',
+            'role' => 'customer',
+        ]);
+
+        User::factory()->create([
+            'name' => 'Jane Smith',
+            'email' => 'jane@example.com',
+            'role' => 'customer',
+        ]);
+
+        // Create additional test users
+        User::factory(5)->create();
+
+        // Run product seeder
+        $this->call(ProductSeeder::class);
     }
 }

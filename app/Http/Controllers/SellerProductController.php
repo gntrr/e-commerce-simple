@@ -12,6 +12,12 @@ class SellerProductController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware(function ($request, $next) {
+            if (!Auth::user()->isSeller()) {
+                abort(403, 'Access denied. Only sellers can access this page.');
+            }
+            return $next($request);
+        });
     }
 
     /**
