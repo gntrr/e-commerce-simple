@@ -52,18 +52,16 @@
             <!-- Add to Cart Form -->
             <form method="POST" action="{{ route('cart.add') }}" class="space-y-4 mb-4">
                 @csrf
-                <input type="hidden" name="product_sku" value="{{ $product['sku'] }}">
-                <input type="hidden" name="product_name" value="{{ $product['name'] }}">
-                <input type="hidden" name="price" value="{{ $product['price'] }}">
+                <input type="hidden" name="sku" value="{{ $product['sku'] }}">
                 
                 <div>
                     <label for="qty" class="block text-sm font-medium text-orange-700 mb-2">Jumlah (gram)</label>
                     <input type="number" 
                            id="qty" 
                            name="qty" 
-                           min="100" 
+                           min="50" 
                            step="50" 
-                           value="100" 
+                           value="50" 
                            required 
                            class="w-full px-3 py-2 border border-orange-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500">
                 </div>
@@ -77,18 +75,16 @@
             <!-- Direct Checkout Form -->
             <form method="POST" action="{{ route('checkout.direct') }}" class="space-y-4">
                 @csrf
-                <input type="hidden" name="product_sku" value="{{ $product['sku'] }}">
-                <input type="hidden" name="product_name" value="{{ $product['name'] }}">
-                <input type="hidden" name="price" value="{{ $product['price'] }}">
+                <input type="hidden" name="sku" value="{{ $product['sku'] }}">
                 
                 <div>
                     <label for="direct_qty" class="block text-sm font-medium text-orange-700 mb-2">Jumlah (gram)</label>
                     <input type="number" 
                            id="direct_qty" 
                            name="qty" 
-                           min="100" 
+                           min="50" 
                            step="50" 
-                           value="100" 
+                           value="50" 
                            required 
                            class="w-full px-3 py-2 border border-orange-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500">
                 </div>

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Cart;
-use App\Support\ProductStore;
+use App\Models\Product;
 
 class CartController extends Controller
 {
@@ -26,13 +26,23 @@ class CartController extends Controller
     {
         $request->validate([
             'sku' => 'required',
-            'qty' => 'integer|min:50'
+            'qty' => 'integer|min:1'
         ]);
 
-        $product = ProductStore::findBySku($request->sku);
-        if (!$product) {
+        $productModel = Product::where('sku', $request->sku)
+            ->where('is_active', true)
+            ->first();
+        if (!$productModel) {
             return back()->with('error', 'Produk tidak ditemukan');
         }
+        
+        $product = [
+            'sku' => $productModel->sku,
+            'name' => $productModel->name,
+            'price' => $productModel->price,
+            'photo' => $productModel->photo,
+            'desc' => $productModel->description
+        ];
 
         $cart = Cart::where('user_id', Auth::id())
                    ->where('product_sku', $request->sku)
@@ -50,7 +60,7 @@ class CartController extends Controller
                 'product_sku' => $product['sku'],
                 'product_name' => $product['name'],
                 'price' => $product['price'],
-                'qty' => $request->qty ?? 100
+                'qty' => $request->qty ?? 1
             ]);
         }
 
@@ -62,7 +72,7 @@ class CartController extends Controller
         $this->authorize('update', $cart);
         
         $request->validate([
-            'qty' => 'required|integer|min:100'
+            'qty' => 'required|integer|min:1'
         ]);
         
         $cart->update([

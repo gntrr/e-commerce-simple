@@ -11,6 +11,7 @@ use App\Http\Controllers\SellerProductController;
 Route::get('/', [StoreController::class, 'index'])->name('home');
 Route::get('/p/{sku}', [StoreController::class, 'show'])->name('product.show')->middleware('auth');
 Route::post('/checkout', [StoreController::class, 'checkout'])->name('checkout');
+Route::post('/checkout/direct', [StoreController::class, 'checkout'])->name('checkout.direct');
 
 // Auth routes
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');

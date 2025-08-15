@@ -67,7 +67,7 @@
                                 <form action="{{ route('cart.update', $cart) }}" method="POST" class="flex items-center space-x-2">
                                     @csrf
                                     @method('PATCH')
-                                    <input type="number" name="qty" value="{{ $cart->qty }}" min="50" step="50" 
+                                    <input type="number" name="qty" value="{{ $cart->qty }}" min="1"
                                            class="w-20 px-2 py-1 border border-orange-300 rounded text-sm focus:ring-1 focus:ring-orange-500">
                                     <button type="submit" class="text-orange-600 hover:text-orange-800 text-sm font-medium">
                                         Update
