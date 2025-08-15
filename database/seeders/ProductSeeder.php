@@ -46,7 +46,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Pala Banda',
                 'description' => 'Pala asli Banda dengan aroma harum dan rasa yang hangat, cocok untuk masakan dan minuman',
                 'price' => 85000,
-                'photo' => 'https://images.unsplash.com/photo-1609501676725-7186f734b2b0?w=500&h=500&fit=crop&crop=center',
+                'photo' => 'https://blogger.googleusercontent.com/img/a/AVvXsEhX8rW5GasqxiT4C-sO4_yAJFDy_HymALl8YraQKc5PPuXSmFsU_hZkAHdhlBhVldzI4xgxkJ5YRjAb4G8MERqSEz2Hatoyw04LSKfazF5LBb-o4-YiRdZflHGY0TurpyNooPAQn9xY0Z5bJ8sA-bJf_W2R2nP1udOz31cEN8kka7Lolvt_N3Dfu65AHQ=s16000',
                 'user_id' => $seller2->id,
             ],
             [
@@ -54,7 +54,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Cengkeh Maluku',
                 'description' => 'Cengkeh premium dari Maluku dengan aroma khas dan kualitas terjamin',
                 'price' => 75000,
-                'photo' => 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500&h=500&fit=crop&crop=center',
+                'photo' => 'https://asset.kompas.com/crops/IAEIZq2paUrJvtaL0vh0fH_YDG8=/195x128:1725x1148/1200x800/data/photo/2021/08/17/611b37f99b727.jpg',
                 'user_id' => $seller2->id,
             ],
             [
@@ -62,7 +62,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Kemiri Makassar',
                 'description' => 'Kemiri asli Makassar untuk bumbu masakan tradisional Indonesia',
                 'price' => 35000,
-                'photo' => 'https://images.unsplash.com/photo-1599909533730-f9b2b3c0e7c5?w=500&h=500&fit=crop&crop=center',
+                'photo' => 'https://res.cloudinary.com/dk0z4ums3/image/upload/v1671590469/attached_image/kemiri-ketahui-kandungan-dan-manfaatnya-untuk-kesehatan.jpg',
                 'user_id' => $seller2->id,
             ],
             [
@@ -70,7 +70,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Jintan Putih',
                 'description' => 'Jintan putih berkualitas tinggi untuk bumbu masakan dan obat tradisional',
                 'price' => 25000,
-                'photo' => 'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=500&h=500&fit=crop&crop=center',
+                'photo' => 'https://cdn.rri.co.id/berita/Tahuna/o/1719400552938-Jintan_(StockImageFactory.com-Shutterstock)/aljxrd8crmxcxwj.jpeg',
                 'user_id' => $seller1->id,
             ],
         ];

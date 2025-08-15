@@ -38,26 +38,29 @@ APP_KEY=base64:...
 APP_DEBUG=true
 APP_URL=http://localhost:8000
 
-# Database MySQL Cloud
+# Database Configuration
 DB_CONNECTION=mysql
-DB_HOST=34.101.191.161
-DB_PORT=5432
-DB_DATABASE=default
-DB_USERNAME=mysql
-DB_PASSWORD=J4fHyyxejMuxtIPRv7lZbPBZk8Kl3Sjahf8UtHNdso3g6oFi7KE0Phy8O44BoBeL
+DB_HOST=your_database_host
+DB_PORT=3306
+DB_DATABASE=your_database_name
+DB_USERNAME=your_database_username
+DB_PASSWORD=your_database_password
 
-# Admin Credentials
-ADMIN_USER=admin
-ADMIN_PASS=spicestore123
+# Admin credentials are now managed in database
+# Run: php artisan db:seed --class=AdminUserSeeder to create admin user
 
 # WhatsApp Integration
 WA_SELLER_NUMBER=62XXXXXXXXXX
 ```
 
-### 3. Database Migration
+### 3. Database Setup
 
 ```bash
+# Jalankan migrasi database
 php artisan migrate
+
+# Buat user admin
+php artisan db:seed --class=AdminUserSeeder
 ```
 
 ### 4. Build Assets
@@ -121,9 +124,17 @@ Produk rempah-rempah disimpan di `storage/app/products.json`:
 
 Akses: `http://localhost:8000/admin/orders`
 
-**Credentials:**
-- Username: `admin`
-- Password: `spicestore123`
+**Setup Admin User:**
+1. Jalankan seeder untuk membuat user admin:
+   ```bash
+   php artisan db:seed --class=AdminUserSeeder
+   ```
+
+**Default Credentials:**
+- Email: `admin@spicestore.com`
+- Password: `admin123`
+
+⚠️ **PENTING:** Ganti password default setelah login pertama!
 
 ## WhatsApp Integration
 
@@ -140,17 +151,166 @@ Alamat: [Alamat Lengkap]
 
 ## Deployment
 
-### Production Environment
+### Development vs Production
 
-1. Set `APP_ENV=production` dan `APP_DEBUG=false`
-2. Generate application key: `php artisan key:generate`
-3. Optimize untuk production:
-   ```bash
-   php artisan config:cache
-   php artisan route:cache
-   php artisan view:cache
-   ```
-4. Setup web server (Apache/Nginx) dengan document root ke `/public`
+**Development (Local):**
+```bash
+# Script composer untuk development (menjalankan semua service sekaligus)
+composer run dev
+# Atau manual:
+php artisan serve
+php artisan queue:work
+npm run dev
+```
+
+### Production Deployment
+
+#### 1. Environment Setup
+```bash
+# Set environment production
+cp .env.example .env
+```
+
+Edit `.env` untuk production:
+```env
+APP_ENV=production
+APP_DEBUG=false
+APP_URL=https://yourdomain.com
+
+# Database production
+DB_CONNECTION=mysql
+DB_HOST=your_production_db_host
+DB_PORT=3306
+DB_DATABASE=your_production_db
+DB_USERNAME=your_production_user
+DB_PASSWORD=your_secure_password
+
+# Admin credentials akan dibuat via seeder
+# WhatsApp Integration
+WA_SELLER_NUMBER=62XXXXXXXXXX
+```
+
+#### 2. Dependencies & Build
+```bash
+# Install dependencies (production only)
+composer install --optimize-autoloader --no-dev
+
+# Generate application key
+php artisan key:generate
+
+# Build assets untuk production
+npm ci
+npm run build
+```
+
+#### 3. Database Setup
+```bash
+# Jalankan migrasi
+php artisan migrate --force
+
+# Buat admin user
+php artisan db:seed --class=AdminUserSeeder
+```
+
+#### 4. Optimization
+```bash
+# Cache konfigurasi untuk performa
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+php artisan event:cache
+
+# Optimize autoloader
+composer dump-autoload --optimize
+```
+
+#### 5. Web Server Configuration
+
+**Nginx Example:**
+```nginx
+server {
+    listen 80;
+    server_name yourdomain.com;
+    root /path/to/your/project/public;
+    index index.php;
+
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    location ~ \.php$ {
+        fastcgi_pass unix:/var/run/php/php8.2-fpm.sock;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+}
+```
+
+**Apache Example (.htaccess sudah ada di /public):**
+- Set DocumentRoot ke `/path/to/your/project/public`
+- Pastikan mod_rewrite aktif
+
+#### 6. Process Management
+
+**Queue Worker (Supervisor):**
+```ini
+[program:spicestore-queue]
+process_name=%(program_name)s_%(process_num)02d
+command=php /path/to/your/project/artisan queue:work --sleep=3 --tries=3
+autostart=true
+autorestart=true
+user=www-data
+numprocs=1
+redirect_stderr=true
+stdout_logfile=/path/to/your/project/storage/logs/queue.log
+```
+
+#### 7. File Permissions
+```bash
+# Set proper permissions
+sudo chown -R www-data:www-data /path/to/your/project
+sudo chmod -R 755 /path/to/your/project
+sudo chmod -R 775 /path/to/your/project/storage
+sudo chmod -R 775 /path/to/your/project/bootstrap/cache
+```
+
+#### 8. SSL/HTTPS Setup
+```bash
+# Menggunakan Let's Encrypt (Certbot)
+sudo apt install certbot python3-certbot-nginx
+sudo certbot --nginx -d yourdomain.com
+```
+
+#### 9. Monitoring & Maintenance
+
+**Log Monitoring:**
+```bash
+# Monitor aplikasi logs
+tail -f storage/logs/laravel.log
+
+# Monitor queue logs
+tail -f storage/logs/queue.log
+
+# Monitor web server logs
+tail -f /var/log/nginx/access.log
+tail -f /var/log/nginx/error.log
+```
+
+**Maintenance Commands:**
+```bash
+# Clear cache jika ada update
+php artisan cache:clear
+php artisan config:clear
+php artisan route:clear
+php artisan view:clear
+
+# Restart queue worker setelah update code
+sudo supervisorctl restart spicestore-queue:*
+
+# Backup database
+mysqldump -u username -p database_name > backup_$(date +%Y%m%d_%H%M%S).sql
+```
 
 ### SSL untuk MySQL Cloud
 
@@ -167,10 +327,18 @@ Jika provider MySQL memerlukan SSL, tambahkan di `config/database.php`:
 
 ## Security Notes
 
-- Jangan commit file `.env` ke repository
+⚠️ **PENTING - Keamanan Kredensial:**
+- **JANGAN PERNAH** commit file `.env` ke repository
+- **JANGAN** bagikan kredensial database di README atau dokumentasi publik
+- Gunakan environment variables atau secret management untuk kredensial sensitif
+- Ganti semua password default sebelum deployment
+
+📋 **Best Practices:**
 - Gunakan `APP_DEBUG=false` di production
-- Pastikan kredensial admin yang kuat
+- Pastikan kredensial admin yang kuat (minimal 12 karakter, kombinasi huruf, angka, simbol)
 - Validasi input form untuk mencegah XSS/injection
+- Aktifkan SSL/TLS untuk koneksi database di production
+- Backup database secara berkala
 
 ## License
 
