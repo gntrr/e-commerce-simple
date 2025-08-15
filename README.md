@@ -12,7 +12,7 @@ Toko online sederhana untuk rempah-rempah nusantara dengan integrasi WhatsApp ch
 
 ## Tech Stack
 
-- Laravel 11
+- Laravel 12
 - PHP 8.2+
 - MySQL (Cloud)
 - Tailwind CSS
