@@ -25,11 +25,11 @@ class CartController extends Controller
     public function add(Request $request)
     {
         $request->validate([
-            'sku' => 'required',
+            'product_sku' => 'required',
             'qty' => 'integer|min:1'
         ]);
 
-        $productModel = Product::where('sku', $request->sku)
+        $productModel = Product::where('sku', $request->product_sku)
             ->where('is_active', true)
             ->first();
         if (!$productModel) {
@@ -45,13 +45,13 @@ class CartController extends Controller
         ];
 
         $cart = Cart::where('user_id', Auth::id())
-                   ->where('product_sku', $request->sku)
+                   ->where('product_sku', $request->product_sku)
                    ->first();
 
         if ($cart) {
             // Update quantity if item already exists
             $cart->update([
-                'qty' => $cart->qty + ($request->qty ?? 100)
+                'qty' => $cart->qty + ($request->qty ?? 1)
             ]);
         } else {
             // Create new cart item

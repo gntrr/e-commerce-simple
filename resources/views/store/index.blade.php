@@ -45,17 +45,11 @@
             @auth
                 <!-- Authenticated User Actions -->
                 <div class="space-y-2">
-                    <form method="POST" action="{{ route('cart.add') }}" class="w-full">
-                        @csrf
-                        <input type="hidden" name="product_sku" value="{{ $product['sku'] }}">
-                        <input type="hidden" name="product_name" value="{{ $product['name'] }}">
-                        <input type="hidden" name="price" value="{{ $product['price'] }}">
-                        <input type="hidden" name="qty" value="100">
-                        <button type="submit" 
-                                class="w-full bg-orange-600 text-white px-3 py-2 rounded-lg text-sm hover:bg-orange-700 transition-colors font-medium">
-                            🛒 + Keranjang
-                        </button>
-                    </form>
+                    <button type="button" 
+                            onclick="openQuantityModal('{{ $product['sku'] }}', '{{ $product['name'] }}', {{ $product['price'] }})"
+                            class="w-full bg-orange-600 text-white px-3 py-2 rounded-lg text-sm hover:bg-orange-700 transition-colors font-medium">
+                        🛒 + Keranjang
+                    </button>
                     <a href="/p/{{ $product['sku'] }}" 
                        class="block w-full text-center bg-orange-100 text-orange-700 px-3 py-2 rounded-lg text-sm hover:bg-orange-200 transition-colors">
                         👁️ Lihat Detail
@@ -90,4 +84,84 @@
     <p class="text-orange-700">Rempah-rempah akan segera tersedia</p>
 </div>
 @endif
+
+<!-- Quantity Modal -->
+<div id="quantityModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
+    <div class="bg-white rounded-lg p-6 w-96 mx-4">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-semibold text-orange-900">Tambah ke Keranjang</h3>
+            <button onclick="closeQuantityModal()" class="text-gray-500 hover:text-gray-700">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+        
+        <div class="mb-4">
+            <p class="text-sm text-gray-600 mb-2">Produk: <span id="modalProductName" class="font-medium"></span></p>
+            <p class="text-sm text-gray-600 mb-4">Harga: <span id="modalProductPrice" class="font-medium text-orange-600"></span></p>
+        </div>
+        
+        <form id="addToCartForm" method="POST" action="{{ route('cart.add') }}">
+            @csrf
+            <input type="hidden" id="modalProductSku" name="product_sku">
+            <input type="hidden" id="modalProductNameInput" name="product_name">
+            <input type="hidden" id="modalProductPriceInput" name="price">
+            
+            <div class="mb-4">
+                <label for="quantity" class="block text-sm font-medium text-gray-700 mb-2">Kuantitas (gram)</label>
+                <input type="number" 
+                       id="quantity" 
+                       name="qty" 
+                       min="1" 
+                       value="50" 
+                       class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+            </div>
+            
+            <div class="flex space-x-3">
+                <button type="button" 
+                        onclick="closeQuantityModal()" 
+                        class="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+                    Batal
+                </button>
+                <button type="submit" 
+                        class="flex-1 px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors">
+                    Tambah ke Keranjang
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+function openQuantityModal(sku, name, price) {
+    document.getElementById('modalProductSku').value = sku;
+    document.getElementById('modalProductNameInput').value = name;
+    document.getElementById('modalProductPriceInput').value = price;
+    document.getElementById('modalProductName').textContent = name;
+    document.getElementById('modalProductPrice').textContent = 'Rp ' + new Intl.NumberFormat('id-ID').format(price);
+    document.getElementById('quantityModal').classList.remove('hidden');
+    document.getElementById('quantity').focus();
+}
+
+function closeQuantityModal() {
+    document.getElementById('quantityModal').classList.add('hidden');
+    document.getElementById('quantity').value = '50';
+}
+
+// Close modal when clicking outside
+document.getElementById('quantityModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeQuantityModal();
+    }
+});
+
+// Close modal with Escape key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeQuantityModal();
+    }
+});
+</script>
+
 @endsection

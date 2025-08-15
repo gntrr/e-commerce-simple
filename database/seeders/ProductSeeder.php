@@ -29,7 +29,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Kayu Manis Ceylon',
                 'description' => 'Kayu manis Ceylon premium kualitas terbaik, aroma harum dan rasa manis alami',
                 'price' => 45000,
-                'photo' => 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=500&h=500&fit=crop&crop=center',
+                'photo' => 'https://i.cdn.newsbytesapp.com/ind/images/l14520210518153604.jpeg',
                 'user_id' => $seller1->id,
             ],
             [
@@ -37,7 +37,7 @@ class ProductSeeder extends Seeder
                 'name' => 'Lada Hitam Lampung',
                 'description' => 'Lada hitam asli Lampung dengan cita rasa pedas yang khas dan aroma yang kuat',
                 'price' => 65000,
-                'photo' => 'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=500&h=500&fit=crop&crop=center',
+                'photo' => 'https://media.suara.com/pictures/970x544/2014/07/30/shutterstock_29417425.jpg',
                 'user_id' => $seller1->id,
             ],
             // Products from Seller 2 (Toko Rempah Nusantara)

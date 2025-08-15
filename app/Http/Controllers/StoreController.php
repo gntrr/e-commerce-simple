@@ -64,7 +64,7 @@ class StoreController extends Controller
     {
         $request->validate([
             'sku' => 'required',
-            'qty' => 'integer|min:50',
+            'qty' => 'integer|min:1',
             'name' => 'required',
             'phone' => 'required',
             'address' => 'required'
@@ -95,7 +95,7 @@ class StoreController extends Controller
             'product_sku' => $product['sku'],
             'product_name' => $product['name'],
             'price' => $product['price'],
-            'qty' => $request->qty ?? 100,
+            'qty' => $request->qty ?? 1,
             'customer_name' => $request->name,
             'phone' => $request->phone,
             'address' => $request->address

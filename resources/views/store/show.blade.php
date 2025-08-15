@@ -59,9 +59,9 @@
                     <input type="number" 
                            id="qty" 
                            name="qty" 
-                           min="50" 
-                           step="50" 
-                           value="50" 
+                           min="1"
+                           step="1"
+                           value="1"
                            required 
                            class="w-full px-3 py-2 border border-orange-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500">
                 </div>
@@ -82,11 +82,41 @@
                     <input type="number" 
                            id="direct_qty" 
                            name="qty" 
-                           min="50" 
-                           step="50" 
-                           value="50" 
+                           min="1"
+                           step="1"
+                           value="1"
                            required 
                            class="w-full px-3 py-2 border border-orange-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500">
+                </div>
+                
+                <div>
+                    <label for="direct_name" class="block text-sm font-medium text-orange-700 mb-2">Nama Lengkap</label>
+                    <input type="text" 
+                           id="direct_name" 
+                           name="name" 
+                           value="{{ auth()->user()->name }}"
+                           required 
+                           class="w-full px-3 py-2 border border-orange-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500">
+                </div>
+                
+                <div>
+                    <label for="direct_phone" class="block text-sm font-medium text-orange-700 mb-2">Nomor WhatsApp</label>
+                    <input type="tel" 
+                           id="direct_phone" 
+                           name="phone" 
+                           value="{{ auth()->user()->profile->phone ?? '' }}"
+                           required 
+                           placeholder="08xxxxxxxxxx" 
+                           class="w-full px-3 py-2 border border-orange-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500">
+                </div>
+                
+                <div>
+                    <label for="direct_address" class="block text-sm font-medium text-orange-700 mb-2">Alamat Lengkap</label>
+                    <textarea id="direct_address" 
+                              name="address" 
+                              rows="3" 
+                              required 
+                              class="w-full px-3 py-2 border border-orange-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500">{{ auth()->user()->profile->address ?? '' }}</textarea>
                 </div>
                 
                 <button type="submit" 
@@ -98,18 +128,16 @@
             <!-- Guest Checkout Form -->
             <form method="POST" action="{{ route('checkout') }}" class="space-y-4">
                 @csrf
-                <input type="hidden" name="product_sku" value="{{ $product['sku'] }}">
-                <input type="hidden" name="product_name" value="{{ $product['name'] }}">
-                <input type="hidden" name="price" value="{{ $product['price'] }}">
+                <input type="hidden" name="sku" value="{{ $product['sku'] }}">
                 
                 <div>
                     <label for="qty" class="block text-sm font-medium text-orange-700 mb-2">Jumlah (gram)</label>
                     <input type="number" 
                            id="qty" 
                            name="qty" 
-                           min="100" 
-                           step="50" 
-                           value="100" 
+                           min="1"
+                           step="1"
+                           value="1"
                            required 
                            class="w-full px-3 py-2 border border-orange-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500">
                 </div>
@@ -118,7 +146,7 @@
                     <label for="customer_name" class="block text-sm font-medium text-orange-700 mb-2">Nama Lengkap</label>
                     <input type="text" 
                            id="customer_name" 
-                           name="customer_name" 
+                           name="name" 
                            required 
                            class="w-full px-3 py-2 border border-orange-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500">
                 </div>
@@ -127,7 +155,7 @@
                     <label for="customer_phone" class="block text-sm font-medium text-orange-700 mb-2">Nomor WhatsApp</label>
                     <input type="tel" 
                            id="customer_phone" 
-                           name="customer_phone" 
+                           name="phone" 
                            required 
                            placeholder="08xxxxxxxxxx" 
                            class="w-full px-3 py-2 border border-orange-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500">
@@ -136,7 +164,7 @@
                 <div>
                     <label for="customer_address" class="block text-sm font-medium text-orange-700 mb-2">Alamat Lengkap</label>
                     <textarea id="customer_address" 
-                              name="customer_address" 
+                              name="address" 
                               rows="3" 
                               required 
                               class="w-full px-3 py-2 border border-orange-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"></textarea>
